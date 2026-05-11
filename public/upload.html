@@ -339,40 +339,58 @@
       uploadBtn.textContent = `Ανεβάστε ${selectedFiles.length} Φωτογραφί${selectedFiles.length > 1 ? 'ες' : 'α'}`;
     }
 
+    const CLOUD_NAME = 'deik1inux';
+    const UPLOAD_PRESET = 'wedding_upload';
+    const UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`;
+
+    function uploadOne(file, onProgress) {
+      return new Promise((resolve, reject) => {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', UPLOAD_PRESET);
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', UPLOAD_URL);
+        xhr.upload.addEventListener('progress', (e) => {
+          if (e.lengthComputable) onProgress(e.loaded / e.total);
+        });
+        xhr.addEventListener('load', () => {
+          if (xhr.status === 200) resolve();
+          else reject(new Error('Αποτυχία ανεβάσματος'));
+        });
+        xhr.addEventListener('error', () => reject(new Error('Σφάλμα δικτύου')));
+        xhr.send(formData);
+      });
+    }
+
     uploadBtn.addEventListener('click', async () => {
       if (selectedFiles.length === 0) return;
 
       uploadBtn.disabled = true;
-      status.textContent = 'Ανέβασμα...';
-      status.className = 'status';
       progressWrap.style.display = 'block';
       progressBar.style.width = '0%';
 
-      const formData = new FormData();
-      selectedFiles.forEach(file => formData.append('photos', file));
+      const total = selectedFiles.length;
+      let completed = 0;
+      const fileProgress = new Array(total).fill(0);
+
+      function updateProgress() {
+        const overall = fileProgress.reduce((a, b) => a + b, 0) / total;
+        progressBar.style.width = Math.round(overall * 100) + '%';
+        status.textContent = `Ανέβασμα ${completed} / ${total}...`;
+        status.className = 'status';
+      }
+
+      updateProgress();
 
       try {
-        await new Promise((resolve, reject) => {
-          const xhr = new XMLHttpRequest();
-          xhr.open('POST', '/upload');
-
-          xhr.upload.addEventListener('progress', (e) => {
-            if (e.lengthComputable) {
-              progressBar.style.width = Math.round((e.loaded / e.total) * 100) + '%';
-            }
-          });
-
-          xhr.addEventListener('load', () => {
-            if (xhr.status === 200) resolve(JSON.parse(xhr.responseText));
-            else reject(new Error(JSON.parse(xhr.responseText).error || 'Αποτυχία ανεβάσματος'));
-          });
-
-          xhr.addEventListener('error', () => reject(new Error('Σφάλμα δικτύου')));
-          xhr.send(formData);
-        });
+        await Promise.all(selectedFiles.map((file, i) =>
+          uploadOne(file, (p) => { fileProgress[i] = p; updateProgress(); })
+            .then(() => { completed++; fileProgress[i] = 1; updateProgress(); })
+        ));
 
         progressBar.style.width = '100%';
-        status.textContent = `Ευχαριστούμε! ${selectedFiles.length} φωτογραφί${selectedFiles.length > 1 ? 'ες' : 'α'} μοιράστηκ${selectedFiles.length > 1 ? 'αν' : 'ε'} με τον Αντρέα & την Ελίνα!`;
+        status.textContent = `Ευχαριστούμε! ${total} φωτογραφί${total > 1 ? 'ες' : 'α'} μοιράστηκ${total > 1 ? 'αν' : 'ε'} με τον Αντρέα & την Ελίνα!`;
         status.className = 'status success';
         selectedFiles = [];
         fileInput.value = '';
