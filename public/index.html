@@ -1,55 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="el">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Andreas & Elina's Wedding</title>
+  <title>Ανδρέας & Ελίνα</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Georgia', serif;
+      font-family: 'Montserrat', sans-serif;
       background: #fdf6f0;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       padding: 32px 16px;
       color: #3a3a3a;
     }
 
-    .card {
-      background: #fff;
-      border-radius: 16px;
-      padding: 36px 28px;
-      max-width: 480px;
-      width: 100%;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    .hero {
       text-align: center;
+      max-width: 540px;
+      width: 100%;
     }
 
-    .couple-names {
-      font-size: 32px;
+    .ornament {
+      font-size: 22px;
+      color: #d4a0a7;
+      letter-spacing: 12px;
+      margin-bottom: 28px;
+    }
+
+    .names {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(52px, 12vw, 80px);
+      font-weight: 300;
       color: #c0737a;
+      line-height: 1.1;
       letter-spacing: 2px;
-      margin-bottom: 4px;
     }
 
-    .wedding-date {
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 4px;
-      color: #b9a8a8;
-      margin-bottom: 16px;
+    .ampersand {
+      font-style: italic;
+      color: #d4a0a7;
     }
 
     .divider {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 16px;
-      color: #e0b4ba;
-      font-size: 18px;
+      gap: 14px;
+      margin: 28px 0;
+      color: #d4a0a7;
+      font-size: 16px;
     }
 
     .divider::before,
@@ -57,313 +61,88 @@
       content: '';
       flex: 1;
       height: 1px;
-      background: #e8d5d7;
+      background: linear-gradient(to right, transparent, #e8d5d7, transparent);
     }
 
-    h1 {
-      font-size: 26px;
-      color: #c0737a;
+    .welcome {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-style: italic;
+      color: #888;
+      line-height: 1.7;
       margin-bottom: 8px;
     }
 
-    .subtitle {
-      font-size: 14px;
-      color: #888;
-      margin-bottom: 28px;
-    }
-
-    .drop-zone {
-      border: 2px dashed #e0b4ba;
-      border-radius: 12px;
-      padding: 36px 20px;
-      cursor: pointer;
-      transition: background 0.2s, border-color 0.2s;
-      background: #fff8f9;
-    }
-
-    .drop-zone:hover, .drop-zone.dragover {
-      background: #fdeef0;
-      border-color: #c0737a;
-    }
-
-    .drop-zone svg {
-      width: 48px;
-      height: 48px;
-      color: #c0737a;
-      margin-bottom: 12px;
-    }
-
-    .drop-zone p {
-      font-size: 15px;
-      color: #666;
-    }
-
-    .drop-zone span {
-      color: #c0737a;
-      font-weight: bold;
-    }
-
-    .drop-zone small {
-      display: block;
-      margin-top: 6px;
+    .welcome-sub {
       font-size: 12px;
-      color: #aaa;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #b9a8a8;
+      margin-bottom: 48px;
     }
 
-    .action-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 0;
-    }
-
-    .btn-camera {
-      display: flex;
-      flex-direction: column;
+    .btn-upload {
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 20px 12px;
+      gap: 10px;
+      padding: 16px 40px;
       background: #c0737a;
       color: #fff;
-      font-size: 14px;
-      font-family: 'Georgia', serif;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .btn-camera:hover {
-      background: #a85e65;
-    }
-
-    .btn-camera svg {
-      width: 32px;
-      height: 32px;
-    }
-
-    #fileInput, #cameraInput {
-      display: none;
-    }
-
-    #preview-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 16px;
-      justify-content: center;
-    }
-
-    .preview-thumb {
-      width: 72px;
-      height: 72px;
-      object-fit: cover;
-      border-radius: 8px;
-      border: 2px solid #e8d5d7;
-    }
-
-    .preview-count {
+      font-family: 'Montserrat', sans-serif;
       font-size: 13px;
-      color: #888;
-      margin-top: 8px;
+      font-weight: 400;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 50px;
+      transition: background 0.2s, transform 0.15s;
     }
 
-    .btn {
-      display: block;
-      width: 100%;
-      padding: 14px;
-      margin-top: 20px;
-      background: #c0737a;
-      color: #fff;
-      font-size: 16px;
-      font-family: 'Georgia', serif;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .btn:hover:not(:disabled) {
+    .btn-upload:hover {
       background: #a85e65;
+      transform: translateY(-1px);
     }
 
-    .btn:disabled {
-      background: #ddd;
-      cursor: not-allowed;
+    .btn-upload svg {
+      width: 18px;
+      height: 18px;
     }
 
-    .progress-bar-wrap {
-      display: none;
-      background: #f0e0e2;
-      border-radius: 8px;
-      overflow: hidden;
-      height: 10px;
-      margin-top: 16px;
+    .footer-note {
+      margin-top: 40px;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #ccc;
     }
-
-    .progress-bar {
-      height: 100%;
-      background: #c0737a;
-      width: 0%;
-      transition: width 0.3s;
-    }
-
-    .status {
-      margin-top: 16px;
-      font-size: 14px;
-      min-height: 20px;
-      color: #555;
-    }
-
-    .status.success { color: #5a9c6e; font-weight: bold; }
-    .status.error { color: #c0484a; }
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="couple-names">Andreas &amp; Elina</div>
-    <div class="wedding-date">Our Wedding Day</div>
+  <div class="hero">
+    <div class="ornament">— ✦ —</div>
+
+    <div class="names">
+      Ανδρέας<br/>
+      <span class="ampersand">&amp;</span><br/>
+      Ελίνα
+    </div>
+
     <div class="divider">&#10084;</div>
-    <h1>Share Your Photos</h1>
-    <p class="subtitle">Help Andreas &amp; Elina remember every moment of their special day!</p>
 
-    <div class="action-row">
-      <button class="btn-camera" id="cameraBtn">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-            d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-            d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
-        </svg>
-        Take a Photo
-      </button>
+    <p class="welcome">Χαρούμαστε που είστε εδώ μαζί μας<br/>την πιο ξεχωριστή μας μέρα.</p>
+    <p class="welcome-sub">Μοιραστείτε τις στιγμές σας μαζί μας</p>
 
-      <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-            d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
-        </svg>
-        <p><span>Choose files</span></p>
-        <small>Images &amp; videos</small>
-      </div>
-    </div>
+    <a href="/upload" class="btn-upload">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+          d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+          d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
+      </svg>
+      Ανεβάστε Φωτογραφίες
+    </a>
 
-    <input type="file" id="fileInput" multiple accept="image/*,video/*" />
-    <input type="file" id="cameraInput" accept="image/*" capture="environment" />
-
-    <div id="preview-container"></div>
-    <p class="preview-count" id="previewCount"></p>
-
-    <button class="btn" id="uploadBtn" disabled>Upload Photos</button>
-
-    <div class="progress-bar-wrap" id="progressWrap">
-      <div class="progress-bar" id="progressBar"></div>
-    </div>
-
-    <p class="status" id="status"></p>
+    <p class="footer-note">Ανδρέας &amp; Ελίνα · 2025</p>
   </div>
-
-  <script>
-    const dropZone = document.getElementById('dropZone');
-    const fileInput = document.getElementById('fileInput');
-    const cameraInput = document.getElementById('cameraInput');
-    const cameraBtn = document.getElementById('cameraBtn');
-    const uploadBtn = document.getElementById('uploadBtn');
-    const previewContainer = document.getElementById('preview-container');
-    const previewCount = document.getElementById('previewCount');
-    const status = document.getElementById('status');
-    const progressWrap = document.getElementById('progressWrap');
-    const progressBar = document.getElementById('progressBar');
-
-    let selectedFiles = [];
-
-    cameraBtn.addEventListener('click', () => cameraInput.click());
-    fileInput.addEventListener('change', () => addFiles(fileInput.files));
-    cameraInput.addEventListener('change', () => addFiles(cameraInput.files));
-
-    dropZone.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      dropZone.classList.add('dragover');
-    });
-    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-    dropZone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      dropZone.classList.remove('dragover');
-      addFiles(e.dataTransfer.files);
-    });
-
-    function addFiles(files) {
-      const incoming = Array.from(files);
-      selectedFiles = [...selectedFiles, ...incoming];
-
-      status.textContent = '';
-      status.className = 'status';
-
-      incoming.forEach(file => {
-        if (file.type.startsWith('image/') && previewContainer.children.length < 9) {
-          const img = document.createElement('img');
-          img.className = 'preview-thumb';
-          img.src = URL.createObjectURL(file);
-          previewContainer.appendChild(img);
-        }
-      });
-
-      const shown = previewContainer.children.length;
-      const extra = selectedFiles.length > shown ? ` (+${selectedFiles.length - shown} more)` : '';
-      previewCount.textContent = `${selectedFiles.length} file${selectedFiles.length > 1 ? 's' : ''} ready to upload${extra}`;
-      uploadBtn.disabled = false;
-      uploadBtn.textContent = `Upload ${selectedFiles.length} Photo${selectedFiles.length > 1 ? 's' : ''}`;
-    }
-
-    uploadBtn.addEventListener('click', async () => {
-      if (selectedFiles.length === 0) return;
-
-      uploadBtn.disabled = true;
-      status.textContent = 'Uploading...';
-      status.className = 'status';
-      progressWrap.style.display = 'block';
-      progressBar.style.width = '0%';
-
-      const formData = new FormData();
-      selectedFiles.forEach(file => formData.append('photos', file));
-
-      try {
-        await new Promise((resolve, reject) => {
-          const xhr = new XMLHttpRequest();
-          xhr.open('POST', '/upload');
-
-          xhr.upload.addEventListener('progress', (e) => {
-            if (e.lengthComputable) {
-              progressBar.style.width = Math.round((e.loaded / e.total) * 100) + '%';
-            }
-          });
-
-          xhr.addEventListener('load', () => {
-            if (xhr.status === 200) resolve(JSON.parse(xhr.responseText));
-            else reject(new Error(JSON.parse(xhr.responseText).error || 'Upload failed'));
-          });
-
-          xhr.addEventListener('error', () => reject(new Error('Network error')));
-          xhr.send(formData);
-        });
-
-        progressBar.style.width = '100%';
-        status.textContent = `Thank you! ${selectedFiles.length} photo${selectedFiles.length > 1 ? 's' : ''} shared with Andreas & Elina!`;
-        status.className = 'status success';
-        selectedFiles = [];
-        fileInput.value = '';
-        cameraInput.value = '';
-        previewContainer.innerHTML = '';
-        previewCount.textContent = '';
-        uploadBtn.textContent = 'Upload Photos';
-
-      } catch (err) {
-        status.textContent = `Error: ${err.message}`;
-        status.className = 'status error';
-        uploadBtn.disabled = false;
-      }
-    });
-  </script>
 </body>
 </html>
