@@ -334,27 +334,18 @@
 
     function addFiles(files) {
       const incoming = Array.from(files);
-      const slots = MAX_FILES - selectedFiles.length;
 
-      if (slots <= 0) {
-        status.textContent = `Μέγιστο όριο ${MAX_FILES} φωτογραφιών ανά ανέβασμα.`;
+      if (selectedFiles.length + incoming.length > MAX_FILES) {
+        status.textContent = `Μπορείτε να ανεβάσετε έως ${MAX_FILES} φωτογραφίες. Επιλέξατε ${incoming.length} — παρακαλώ δοκιμάστε ξανά με ${MAX_FILES} ή λιγότερες.`;
         status.className = 'status error';
         return;
       }
 
-      const accepted = incoming.slice(0, slots);
-      const rejected = incoming.length - accepted.length;
-      selectedFiles = [...selectedFiles, ...accepted];
-
+      selectedFiles = [...selectedFiles, ...incoming];
       status.textContent = '';
       status.className = 'status';
 
-      if (rejected > 0) {
-        status.textContent = `${rejected} φωτογραφί${rejected > 1 ? 'ες' : 'α'} δεν προστέθηκ${rejected > 1 ? 'αν' : 'ε'} — μέγιστο ${MAX_FILES} ανά ανέβασμα.`;
-        status.className = 'status error';
-      }
-
-      accepted.forEach(file => {
+      incoming.forEach(file => {
         if (previewContainer.children.length < 9) {
           const img = document.createElement('img');
           img.className = 'preview-thumb';
