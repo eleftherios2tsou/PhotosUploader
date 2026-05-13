@@ -317,15 +317,32 @@
       addFiles(e.dataTransfer.files);
     });
 
+    const MAX_FILES = 30;
+
     function addFiles(files) {
       const incoming = Array.from(files);
-      selectedFiles = [...selectedFiles, ...incoming];
+      const slots = MAX_FILES - selectedFiles.length;
+
+      if (slots <= 0) {
+        status.textContent = `Μέγιστο όριο ${MAX_FILES} φωτογραφιών ανά ανέβασμα.`;
+        status.className = 'status error';
+        return;
+      }
+
+      const accepted = incoming.slice(0, slots);
+      const rejected = incoming.length - accepted.length;
+      selectedFiles = [...selectedFiles, ...accepted];
 
       status.textContent = '';
       status.className = 'status';
 
-      incoming.forEach(file => {
-        if (file.type.startsWith('image/') && previewContainer.children.length < 9) {
+      if (rejected > 0) {
+        status.textContent = `${rejected} φωτογραφί${rejected > 1 ? 'ες' : 'α'} δεν προστέθηκ${rejected > 1 ? 'αν' : 'ε'} — μέγιστο ${MAX_FILES} ανά ανέβασμα.`;
+        status.className = 'status error';
+      }
+
+      accepted.forEach(file => {
+        if (previewContainer.children.length < 9) {
           const img = document.createElement('img');
           img.className = 'preview-thumb';
           img.src = URL.createObjectURL(file);
@@ -335,7 +352,7 @@
 
       const shown = previewContainer.children.length;
       const extra = selectedFiles.length > shown ? ` (+${selectedFiles.length - shown} ακόμα)` : '';
-      previewCount.textContent = `${selectedFiles.length} αρχείο${selectedFiles.length > 1 ? ' έτοιμα' : ' έτοιμο'} για ανέβασμα${extra}`;
+      previewCount.textContent = `${selectedFiles.length} / ${MAX_FILES} φωτογραφί${selectedFiles.length > 1 ? 'ες' : 'α'} έτοιμ${selectedFiles.length > 1 ? 'ες' : 'η'} για ανέβασμα${extra}`;
       uploadBtn.disabled = false;
       uploadBtn.textContent = `Ανεβάστε ${selectedFiles.length} Φωτογραφί${selectedFiles.length > 1 ? 'ες' : 'α'}`;
     }

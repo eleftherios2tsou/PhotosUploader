@@ -52,7 +52,7 @@ app.get('/upload', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'upload.html'));
 });
 
-app.post('/upload', upload.array('photos', 50), async (req, res) => {
+app.post('/upload', upload.array('photos', 30), async (req, res) => {
   if (!req.files || req.files.length === 0) {
     return res.status(400).json({ error: 'No files uploaded' });
   }
